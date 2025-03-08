@@ -1,0 +1,18 @@
+# Virtual environment
+env/
+venv/
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# MacOS system files
+.DS_Store
+
+# Large files (optional)
+*.mp4
+*.zip
+*.png
+*.jpg
