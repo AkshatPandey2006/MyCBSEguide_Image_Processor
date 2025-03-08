@@ -8,6 +8,7 @@ app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'
 PROCESSED_FOLDER = 'processed'
 
+# Create folders if they do not exist
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(PROCESSED_FOLDER, exist_ok=True)
 
@@ -43,4 +44,6 @@ def processed_image(filename):
     return send_from_directory(PROCESSED_FOLDER, filename)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    import os
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
