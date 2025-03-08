@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Processor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Image Processor</h1>
+        <p class="description">Upload an image to process it. You can also drag and drop your file.</p>
+        
+        <form id="uploadForm" enctype="multipart/form-data">
+            <label for="fileInput" class="file-label">
+                <input type="file" id="fileInput" accept="image/*" required>
+                <span class="file-text">Choose Image</span>
+            </label>
+            <button type="submit">Process Image</button>
+        </form>
+
+        <div id="downloadSection" style="display: none;">
+            <h3>Download Processed Image:</h3>
+            <a id="downloadLink" download>Click here to download</a>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
