@@ -1,14 +1,13 @@
-name: Keep App Awake
+name: Keep Render Active
 
 on:
   schedule:
-    - cron: '* * * * *'  # This means: Run every 1 minute
+    - cron: '*/10 * * * *'  # Runs every hour at the top of the hour
 
 jobs:
   ping:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Uses a virtual machine running Ubuntu
 
     steps:
-    - name: Send request to keep the app awake
-      run: |
-        curl -I https://mycbseguide-image-processor.onrender.com/
+      - name: Send HTTP Request
+        run: curl -I https://mycbseguide-image-processor.onrender.com/
