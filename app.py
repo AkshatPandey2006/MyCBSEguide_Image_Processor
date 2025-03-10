@@ -24,17 +24,29 @@ def process_image():
         image_path = os.path.join(UPLOAD_FOLDER, file.filename)
         file.save(image_path)
 
-        # Process image (Grayscale + Sharpening)
+        # Process image (Grayscale + Sharpening + Watermark Removal)
         image = cv2.imread(image_path)
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+        # Apply sharpening
         kernel = np.array([[0, -1, 0],
                            [-1, 5, -1],
                            [0, -1, 0]])
         sharpened = cv2.filter2D(gray, -1, kernel)
 
+        # Detect watermark using thresholding (for both lighter and darker watermarks)
+        light_thresh = cv2.threshold(sharpened, 200, 255, cv2.THRESH_BINARY)[1]
+        dark_thresh = cv2.threshold(sharpened, 50, 255, cv2.THRESH_BINARY_INV)[1]
+
+        # Combine both masks
+        watermark_mask = cv2.bitwise_or(light_thresh, dark_thresh)
+
+        # Perform inpainting to remove the watermark
+        inpainted_image = cv2.inpaint(image, watermark_mask, inpaintRadius=3, flags=cv2.INPAINT_TELEA)
+
         # Save the processed image
         processed_image_path = os.path.join(PROCESSED_FOLDER, 'processed_' + file.filename)
-        cv2.imwrite(processed_image_path, sharpened)
+        cv2.imwrite(processed_image_path, inpainted_image)
 
         # Return the processed image's path
         return jsonify({"processed_image_url": f"/processed/{'processed_' + file.filename}"})
